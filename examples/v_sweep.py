@@ -1,4 +1,5 @@
-''' Example of a simple heterostructure with constant mesh
+''' Example of a simple heterostructure with constant mesh.
+    Sweeping the top voltage and comparing to analytical.
     Using the default physical constants from constants.py
 '''
 import constants as const
