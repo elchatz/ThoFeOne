@@ -6,11 +6,14 @@ from constants import DefaultProblem as dpr
 import thofeone as tf
 import discretized_quantum as dq
 import discretized_poisson as dp
+from minimal_model import *
 import sc_problem as scp
+
+
 import matplotlib.pyplot as plt
 import numpy as np
 
-def build_solve(w2deg, n_d):
+def prepare(w2deg, n_d):
     ''' Build and solve the self-consistent problem
         w2deg:    Width of the 2DEG
         The stack is from the paper 'Unveiling the charge distribution 
@@ -29,12 +32,8 @@ def build_solve(w2deg, n_d):
                    'mass':dpr.m_gaas, 'nd':0, 'epsilon':dpr.epsilon_GaAs}
     
     layers_data = [gaas_data_0, algaas_data_1, algaas_data_2, algaas_data_3, gaas_data_1]
-
-    qp = dq.DiscretizedQuantum()
-    Diag, Upper = qp.build_system(layers_data = layers_data)
-    Es, Psis = qp.eigs_quantum()
     
-    return qp, layers_data, qp.U
+    return layers_data
 
 if __name__ == '__main__':
     
@@ -51,52 +50,55 @@ if __name__ == '__main__':
     d4 = 10
     dtot = d1 + d2 + d3 + d4
     w2deg = 100
-    aa = const.aa
+    n_iter = 2000
+    ns_arr = []
+    V_arr = np.arange(-0.8, 0.0, 0.05)
     
-    # Build the quantum problem and solve once
-    qp, layers_data, U_quant = build_solve(w2deg, n_d)
-    scp.init_ILDOS(qp, layers_data, U_quant)
+    layers_data = prepare(w2deg, n_d)
+    qp = dq.DiscretizedQuantum()
+    Diag, Upper = qp.build_system(layers_data = layers_data)
+    Es, Psis = qp.eigs_quantum()
     
-    # Doping density for mesh spacing = 1 nm
-    # If changing the spacing, you need to take this into account in the sum in 
-    # order to calculate the derivative. Probably include an integration routine
-    # inside discretized_quantum. Sizes for each mesh position are not stored, need
-    # to be calculated
-    print('Doping density', -((1*np.sum(qp.nd)/qp.pois_conversion)*1e21)/d2, '/cm2')
+    # Preparing vqlues for minimal model
+    nd_min = n_d*d2 # Doping in /nm3 and d2 in nm
+    nd_min = nd_min*1e18 # Convert to /m2 for analytical model solution
     
-    # Build Poisson problem
-    gates = (False, True)
-    pp = dp.DiscretizedPoisson()
-    scp.build_pois(qp, pp, gates, layers_data)
+    rho = const.rho_2DEG_SI(dpr.m_gaas)
+    nsvsVsc_7 = ns_7(rho = rho, d1 = d1*const.nm, d2 = d2*const.nm, d3=d3*const.nm, 
+                     d4 = d4*const.nm, nd = nd_min, Vs = V_arr-barrier_height)
+    nsvsVsc_7_p = ns_7_poisson(d1 = d1*const.nm, d2 = d2*const.nm, d3=d3*const.nm, 
+                               d4 = d4*const.nm, nd = nd_min, Vs = V_arr-barrier_height)
+
+    # Sweep gate voltage
+    print('---- Start of gate sweep ----')
+    for Vg in V_arr:
+        print('Vg = ', np.round(Vg, decimals = 2), 'V')
+        scp.init_ILDOS(qp, layers_data, qp.U)
+        gates = (False, True)
+        pp = dp.DiscretizedPoisson()
+        scp.build_pois(qp, pp, gates, layers_data)
+        qp.simple_mixing(pp, gates = gates, mu = 0, n_iter = n_iter, V_top = Vg-barrier_height)
+        ns = np.sum(qp.ildos[qp.positions < (w2deg+dpr.grid_size)])
+        ns_arr = np.append(ns_arr, ns)
+    print('---- End of gate sweep ----')
     
-    # Solve self-consistent at gate voltage = -0.3 V
-    Vg = -0.3
-    n_iter = 1000
-    qp.simple_mixing(pp, gates = gates, mu = 0, n_iter = n_iter, V_top = Vg-barrier_height)
+    # Plot results
+    fig, ax = plt.subplots(figsize=(9,5))
+    ax.plot(V_arr, ns_arr*1e18/1e15, marker='o', mfc=None, alpha=1, linewidth=0, label = '1D simulation' )
+    ax.plot(V_arr, nsvsVsc_7/1e15, alpha=1, linewidth=3.0, label = 'Quantum capacitance')
+    ax.plot(V_arr, nsvsVsc_7_p/1e15, alpha=1, linewidth=3.0, label = 'Poisson only')
     
-    fig, ax = plt.subplots()
-    ax.plot(qp.positions, (qp.Eb/qp.eV_2_t) + qp.U/qp.eV_2_t, 'g')
-    plt.xlabel('position (nm)')
-    plt.ylabel(r'$E_c$ + $U_{pois}$ [eV]')
-    for item in ([ax.title, ax.xaxis.label, ax.yaxis.label] + 
+    for item in ([ax.title, ax.xaxis.label, ax.yaxis.label] +
                  ax.get_xticklabels() + ax.get_yticklabels()):
         item.set_fontsize(15)
-    plt.grid(b=True)
-    plt.tight_layout()
-    plt.savefig('band.png')
     
-    # This prints out the charge density in /m3 for a CONSTANT mesh 
-    # spacing = discretization constant for Hamiltonian. For variable mesh, 
-    # we need the mesh at each location (L array), or just print in /nm2
-    fig, ax = plt.subplots()
-    ax.plot(qp.positions, (qp.ildos*1e18)/(qp.aa*const.nm), 'g')
-    plt.xlabel('position (nm)')
-    plt.ylabel(r'Charge ($m^{-3}$)')
-    for item in ([ax.title, ax.xaxis.label, ax.yaxis.label] + 
-                 ax.get_xticklabels() + ax.get_yticklabels()):
-        item.set_fontsize(15)
-    plt.grid(b=True)
-    plt.savefig('ILDOS.png')
+    plt.legend(fontsize=15)
+    plt.xlim(-0.5, 0.0)
+    plt.xlabel(r'$V_g$ (V)')
+    plt.ylabel(r'$n_g$ ($10^{15} m^{-2}$)') 
+    plt.grid()
+    plt.savefig('analytical_simulation.png')
+    
     
 
 

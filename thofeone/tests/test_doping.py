@@ -46,21 +46,14 @@ def prepare(w2deg, mesh):
     
     return layers_data
 
-def hetero(aa):
+@pytest.fixture
+def hetero():
     layers_data = prepare(w2deg = w2deg, mesh = 1)
-    qp = dq.DiscretizedQuantum(aa = aa)
+    qp = dq.DiscretizedQuantum()
     Diag, Upper = qp.build_system(layers_data = layers_data)
     Es, Psis = qp.eigs_quantum()    
     scp.init_ILDOS(qp, layers_data, qp.U)
-    return -((1*np.sum(qp.nd)/qp.pois_conversion)*1e21)/d2
+    return -(1*np.sum(qp.nd)/qp.pois_conversion)/d2
 
-@pytest.fixture
-def hetero_1nm():
-    return hetero(1).astype(float)
-
-@pytest.fixture
-def hetero_05nm():
-    return hetero(0.5).astype(float)
-
-def test_mesh_doping(hetero_1nm, hetero_05nm):
-    assert np.isclose(hetero_1nm, hetero_05nm)
+def test_mesh_doping(hetero):
+    assert np.isclose(hetero, n_d, rtol=1e-10, atol=1e-10)

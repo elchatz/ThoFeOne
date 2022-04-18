@@ -7,6 +7,7 @@ epsilon_0 = 8.8541878128e-12 # Vacuum permitivity [F/m]
 nm = 1e-9 # nm [m]
 hbar = 1.0545718e-34 # Reduced Planck constant [J⋅s / m2⋅kg⋅s]
 m_e  = 9.10938356e-31 # Electron mass [kg]
+aa = 1 # Discretization constant for Hamiltonian [nm]
 
 def rho_2DEG_aa(m, aa):
     ''' Returns the 2DEG density in units of [1/J]
@@ -45,7 +46,6 @@ class DefaultProblem:
     Ec_algaas = 0.292 #eV
     
     # Default values for solution
-    aa = 1 # Discretization constant for Hamiltonian [nm]
     grid_size = 1 # Mesh spacing [nm]
     #t = hbar**2/(2*m_e*(aa*nm)**2) # Hopping elements
     #eV_2_t = ee/t # Converting energy units to t

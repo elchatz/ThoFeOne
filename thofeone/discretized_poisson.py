@@ -12,7 +12,7 @@ class DiscretizedPoisson:
     if you need to solve the variable mesh discretized self-consistent problem
     """
     
-    def __init__(self, aa):
+    def __init__(self):
         ''' 
         Initialize the descritized Poisson problem     
         '''
@@ -20,8 +20,7 @@ class DiscretizedPoisson:
         self.cappa = np.array([], dtype=float)   
         self.positions = np.array([], dtype=float) # x positions [nm]
         self.n_cells = 0 # Number of cells for Poisson [integer]
-        self.aa = aa # Hamiltonian discretization constant [nm]
-        self.pois_conversion = ee/(self.aa*nm*epsilon_0) 
+        self.pois_conversion = ee/(aa*nm*epsilon_0) 
         
     def fill_capa(self, positions, gates, epsilon): 
         """ Fill in the capacitance matrix

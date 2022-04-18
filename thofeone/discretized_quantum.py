@@ -10,7 +10,7 @@ from constants import *
 class DiscretizedQuantum:
     """ Build the Discretized Quantum Problem 
     """
-    def __init__(self, aa):
+    def __init__(self):
         self.positions = np.array([], dtype=float) # x [nm]
         self.U = np.array([], dtype=float) # [t]
         self.L = np.array([], dtype=float) # Helper variable for variable mesh
@@ -149,7 +149,6 @@ class DiscretizedQuantum:
         self.update_U(-U_pois.copy())
         self.Es, self.Psis = self.eigs_quantum()
         ildos_sc = self.solve_ildos(mu = mu*self.eV_2_t, init = True)
-        #self.ildos = ildos_sc * rho_2DEG_aa(self.aa, self.mass)
         self.ildos = ildos_sc * rho_2DEG_nm(self.mass)
         return
         
