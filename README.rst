@@ -1,3 +1,6 @@
+Development version for varying mesh spacing and Hamiltonian discretization 
+constant.
+
 ThoFeOne is a free (open source) Python package for the solution of the 
 one-dimensional self-consistent quantum-Poisson problem in the Thomas-Fermi
 approximation. It is written in Python and can be used to calculate the
