@@ -18,5 +18,22 @@ capacitance, with/without the quantum term (Poisson only) etc.
 
 See also in this directory: LICENSE.rst, CITING.rst, FUNDING.rst
 
+**INSTALL**
+
+After upgrading setuptools, type in the directory containing the unpacked module: ::
+
+  <python executable> -m pip install -e thofeone
+
+where <python executable> depends on the platform, i.e. "python" for Linux, "py" for Windows.
+Then add the directory path that contains the module in PYTHONPATH either permanently, or
+adding in your code: ::
+
+  import os
+  path = 'module path'
+  os.environ['PATH'] += ':'+path
+
+
+**FUNDING**
+
 This project has received funding from the European Union's Horizon 2020 research
 and innovation programme under the Marie Skłodowska-Curie grant agreement No. 840550.
