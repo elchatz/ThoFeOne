@@ -1,5 +1,4 @@
-''' Example of a simple heterostructure with constant mesh.
-    Sweeping the top voltage and comparing to analytical.
+''' Example of a simple heterostructure with constant mesh
     Using the default physical constants from constants.py
 '''
 import constants as const
@@ -9,7 +8,6 @@ import discretized_quantum as dq
 import discretized_poisson as dp
 from minimal_model import *
 import sc_problem as scp
-
 
 import matplotlib.pyplot as plt
 import numpy as np

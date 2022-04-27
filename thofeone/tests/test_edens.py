@@ -2,6 +2,7 @@
     Mesh is constant
     Using the default physical constants from constants.py
 '''
+
 import constants as const
 import sc_problem as scp
 from constants import DefaultProblem as dpr
@@ -65,9 +66,9 @@ def min_mod():
     nd_min = n_d*d2
     nd_min = nd_min*1e18
     rho = const.rho_2DEG_SI(dpr.m_gaas)
-    nsvsVsc_7 = ns_7(rho = rho, d1 = d1*const.nm, d2 = d2*const.nm, d3=d3*const.nm, 
+    nsvsVsc = UndopedCap.ns(rho = rho, d1 = d1*const.nm, d2 = d2*const.nm, d3=d3*const.nm, 
                      d4 = d4*const.nm, nd = nd_min, Vs = Vg-barrier_height)
-    return float(nsvsVsc_7)/1e18
+    return float(nsvsVsc)/1e18
 
 def test_edens(sim, min_mod):
     assert np.isclose(sim, min_mod, rtol=3e-4, atol=3e-4)

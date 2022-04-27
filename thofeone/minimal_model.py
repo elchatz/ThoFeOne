@@ -15,7 +15,7 @@ import matplotlib.pyplot as plt
 def ns_0D(rho, Ef):
     return rho*Ef
     
-class UpdopedCap:
+class UndopedCap:
     '''
     Simple heterostructure with undoped cap layer
     '''  
