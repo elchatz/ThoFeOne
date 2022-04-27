@@ -64,9 +64,9 @@ if __name__ == '__main__':
     nd_min = nd_min*1e18 # Convert to /m2 for analytical model solution
     
     rho = const.rho_2DEG_SI(dpr.m_gaas)
-    nsvsVsc_7 = ns_7(rho = rho, d1 = d1*const.nm, d2 = d2*const.nm, d3=d3*const.nm, 
+    nsvsVsc = UndopedCap.ns(rho = rho, d1 = d1*const.nm, d2 = d2*const.nm, d3=d3*const.nm, 
                      d4 = d4*const.nm, nd = nd_min, Vs = V_arr-barrier_height)
-    nsvsVsc_7_p = ns_7_poisson(d1 = d1*const.nm, d2 = d2*const.nm, d3=d3*const.nm, 
+    nsvsVsc_p = UndopedCap.ns_poisson(d1 = d1*const.nm, d2 = d2*const.nm, d3=d3*const.nm, 
                                d4 = d4*const.nm, nd = nd_min, Vs = V_arr-barrier_height)
 
     # Sweep gate voltage
@@ -85,8 +85,8 @@ if __name__ == '__main__':
     # Plot results
     fig, ax = plt.subplots(figsize=(9,5))
     ax.plot(V_arr, ns_arr*1e18/1e15, marker='o', mfc=None, alpha=1, linewidth=0, label = '1D simulation' )
-    ax.plot(V_arr, nsvsVsc_7/1e15, alpha=1, linewidth=3.0, label = 'Quantum capacitance')
-    ax.plot(V_arr, nsvsVsc_7_p/1e15, alpha=1, linewidth=3.0, label = 'Poisson only')
+    ax.plot(V_arr, nsvsVsc/1e15, alpha=1, linewidth=3.0, label = 'Quantum capacitance')
+    ax.plot(V_arr, nsvsVsc_p/1e15, alpha=1, linewidth=3.0, label = 'Poisson only')
     
     for item in ([ax.title, ax.xaxis.label, ax.yaxis.label] +
                  ax.get_xticklabels() + ax.get_yticklabels()):

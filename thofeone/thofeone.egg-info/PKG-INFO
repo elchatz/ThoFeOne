@@ -1,3 +1,20 @@
+Metadata-Version: 2.1
+Name: thofeone
+Version: 2022.4
+Summary: Quantum-Poisson Thomas-Fermi 1D tools
+Home-page: https://github.com/elchatz/thofeone
+Author: Eleni Chatzikyriakou
+Author-email: chatzikeleni@gmail.com
+License: UNKNOWN
+Project-URL: Bug Tracker, https://github.com/elchatz/thofeone/issues
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: 2-clause BSD License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/x-rst
+License-File: LICENSE.rst
+
 ThoFeOne is a Python module for the caclulation of the one-dimensional self-
 consistent quantum-Poisson problem in the Thomas-Fermi approximation. It also
 includes analytical equations for coparing the simultor results. It can be 
@@ -18,22 +35,6 @@ capacitance, with/without the quantum term (Poisson only) etc.
 
 See also in this directory: LICENSE.rst, CITING.rst, FUNDING.rst
 
-**INSTALL**
-
-After upgrading setuptools, type in the directory containing the unpacked module: ::
-
-  <python executable> -m pip install -e thofeone
-
-where <python executable> depends on the platform, i.e. "python" for Linux, "py" for Windows.
-Then add the directory path that contains the module in PYTHONPATH either permanently, or
-adding in your code: ::
-
-  import os
-  path = 'module path'
-  os.environ['PATH'] += ':'+path
-
-
-**FUNDING**
-
 This project has received funding from the European Union's Horizon 2020 research
 and innovation programme under the Marie Skłodowska-Curie grant agreement No. 840550.
+
