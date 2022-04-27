@@ -30,7 +30,7 @@ adding in your code: ::
 
   import os
   path = 'module path'
-  os.environ['PATH'] += ':'+path
+  os.environ['PATH'] += ';'+path
 
 
 **FUNDING**
