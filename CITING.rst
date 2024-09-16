@@ -1,6 +1,6 @@
 This module has been used in:
 
-E. Chatzikyriakou, J. Wang, L. Mazzella, A. Lacerda-Santos, M. Cecilia da Silva Figueira, A. Trellaxis, S. Birner, T. Grange, C. Bäuerle, X. Waintal, “Unveiling the charge distribution of a GaAs-based nanoelectronic device: A large experimental data-set approach”, Phys. Rev. Res., Dec 2022, doi: 10.1103/PhysRevResearch.4.043163
+E Chatzikyriakou, J Wang, L Mazzella, A Lacerda-Santos, M Cecilia da Silva Figueira, A Trellaxis, S. Birner, T Grange, C Bäuerle, X Waintal, “Unveiling the charge distribution of a GaAs-based nanoelectronic device: A large experimental data-set approach”, Phys. Rev. Res., Dec 2022, doi: 10.1103/PhysRevResearch.4.043163
   
 discretized_quantum.py implements:
 
