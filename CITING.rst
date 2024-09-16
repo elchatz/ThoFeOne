@@ -1,8 +1,6 @@
 This module has been used in:
 
-Chatzikyriakou, E., Lacerda-Santos, A., & Waintal, X. (2021). "A minimal model 
-for the calculation of surface charges in GaAs/AlGaAs heterostructures". Bulletin 
-of the American Physical Society. https://meetings.aps.org/Meeting/MAR21/Session/H71.302
+E. Chatzikyriakou, J. Wang, L. Mazzella, A. Lacerda-Santos, M. Cecilia da Silva Figueira, A. Trellaxis, S. Birner, T. Grange, C. Bäuerle, X. Waintal, “Unveiling the charge distribution of a GaAs-based nanoelectronic device: A large experimental data-set approach”, Phys. Rev. Res., Dec 2022, doi: 10.1103/PhysRevResearch.4.043163
   
 discretized_quantum.py implements:
 
